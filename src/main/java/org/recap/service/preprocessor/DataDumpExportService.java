@@ -73,7 +73,7 @@ public class DataDumpExportService {
             String message = getMessageFromIsRecordAvailableQ();
             if (message.equals(ScsbConstants.DATADUMP_RECORDS_AVAILABLE_FOR_PROCESS)) {
                 outputString = getMessageFromHttpQ();
-                dataDumpEmailService.sendEmailNotification(dataDumpRequest);
+            //    dataDumpEmailService.sendEmailNotification(dataDumpRequest);
             } else{
                 outputString = message;
             }

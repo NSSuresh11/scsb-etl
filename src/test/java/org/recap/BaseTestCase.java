@@ -22,7 +22,7 @@ public class BaseTestCase {
 
     @Test
     public void contextLoads() {
-        Assert.isTrue(true);
+        Assert.isTrue(true, "");
     }
 
 }

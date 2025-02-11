@@ -277,4 +277,6 @@ public class ScsbConstants {
     public static final String GATEWAY_EXCEPTION_UPDATE = "exception occurred while update requests log id with validation message is :: {}";
     public static final String RESPONSE_LOG = "Resonse Message is {}";
 
+    public static final String SHELL_FILE_NAME = "s3_data_upload.sh";
+
 }

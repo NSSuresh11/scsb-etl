@@ -27,6 +27,7 @@ import org.recap.util.datadump.DataExportHeaderUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StopWatch;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -36,6 +37,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by peris on 11/5/16.
@@ -76,6 +78,26 @@ public class DataExportEmailProcessor implements Processor {
 
     @Value("${" + PropertyKeyConstants.ETL_DATA_DUMP_FETCHTYPE_FULL + "}")
     private String fetchTypeFull;
+
+    @Value("${" + PropertyKeyConstants.ETL_DATA_DUMP_DIRECTORY + "}")
+    private String dataDumpReportDirectory;
+
+    @Value("${" + PropertyKeyConstants.SCSB_BUCKET_NAME + "}")
+    private String scsbBucketName;
+
+    @Value("${" + PropertyKeyConstants.S3_DATA_DUMP_DIR + "}")
+    private String s3DataDumpDirectory;
+
+    @Value("${" + PropertyKeyConstants.S3_DATA_DUMP_DIR + "}")
+    String s3DataDumpRemoteServer;
+    @Value("${" + PropertyKeyConstants.ETL_DATA_DUMP_FTP_STAGING_DIRECTORY + "}")
+    private String s3StagingDir;
+
+    @Value("${" + PropertyKeyConstants.AWS_ACCESS_KEY + "}")
+    private String awsAccessKey;
+
+    @Value("${" + PropertyKeyConstants.AWS_ACCESS_SECRET_KEY + "}")
+    private String awsAccessSecretKey;
 
     /**
      * The Ftp data dump success report generator.
@@ -257,6 +279,41 @@ public class DataExportEmailProcessor implements Processor {
     private void processEmail(String totalRecordCount, String failedBibs, String exportedItemCount,String fetchType,String requestingInstitutionCode){
         if (transmissionType.equals(ScsbConstants.DATADUMP_TRANSMISSION_TYPE_S3)
                 ||transmissionType.equals(ScsbConstants.DATADUMP_TRANSMISSION_TYPE_FILESYSTEM)) {
+
+            String[] split = folderName.split("/");
+            String fileName = split[3];
+
+            String s3Folder = folderName.substring(0,folderName.lastIndexOf("/"));
+            StopWatch stopWatch = new StopWatch();
+            stopWatch.start();
+
+            try {
+
+                String[] command = {"/bin/bash", dataDumpReportDirectory + File.separator + ScsbConstants.SHELL_FILE_NAME, s3StagingDir+File.separator+folderName, fileName, scsbBucketName, s3DataDumpDirectory + s3Folder, awsAccessKey, awsAccessSecretKey, dataDumpReportDirectory, requestingInstitutionCode}; // Replace with the actual path
+                // Execute the command
+                Process process = Runtime.getRuntime().exec(command);
+                boolean procExit = process.waitFor(Long.valueOf(30), TimeUnit.SECONDS);
+                if (procExit) {
+                    log.info("Script executed successfully.");
+                } else {
+                    log.info("Script execution time out exceeded " + procExit);
+                }
+            }
+            catch (IOException ioExc) {
+                log.error("Exception Message >>>>>>> " + ioExc.getMessage());
+                stopWatch.stop();
+                log.info("Shell Script : total time at which the thread is interrupted ---> {} sec", stopWatch.getTotalTimeSeconds());
+
+            }
+            catch (Exception e) {
+                log.error("Exception Message >>>>>>> " + e.getMessage());
+                stopWatch.stop();
+                log.info("Shell Script : total time at which the thread is interrupted ---> {} sec", stopWatch.getTotalTimeSeconds());
+
+            }
+            stopWatch.stop();
+            log.info("Shell Script : Total time taken to zip and upload data to s3---> {} sec", stopWatch.getTotalTimeSeconds());
+
             dataDumpEmailService.sendEmail(institutionCodes,
                     Integer.valueOf(totalRecordCount),
                     Integer.valueOf(failedBibs),

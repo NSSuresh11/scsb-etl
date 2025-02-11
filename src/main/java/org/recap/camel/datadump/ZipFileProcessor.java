@@ -82,7 +82,7 @@ public class ZipFileProcessor implements Processor {
         boolean isRequestFromSwagger = Boolean.parseBoolean(getValueFor(batchHeaders, "isRequestFromSwagger"));
         dataExportEmailProcessor.setRequestFromSwagger(isRequestFromSwagger);
         if(isRequestFromSwagger){
-             dataExportEmailProcessor.setEltRequestId(Integer.valueOf(getValueFor(batchHeaders, "etlRequestId")));
+            dataExportEmailProcessor.setEltRequestId(Integer.valueOf(getValueFor(batchHeaders, "etlRequestId")));
         }
 
         Route ftpRoute = exchange.getContext().getRoute(ScsbConstants.FTP_ROUTE);
@@ -102,14 +102,20 @@ public class ZipFileProcessor implements Processor {
                         .log("Data dump zipping completed.")
                         .bean(new ZipFileProcessor(exchange.getContext().createProducerTemplate(), exchange), "ftpOnCompletion")
                         .end();
-                from("file:" + s3StagingDir + File.separator + folderName + "?noop=true&antInclude=*.xml,*.json")
-                        .routeId(ScsbConstants.FTP_ROUTE)
-                        .aggregate(new ZipAggregationStrategy(true, true))
-                        .constant(true)
-                        .completionFromBatchConsumer()
-                        .eagerCheckCompletion()
-                        .setHeader(S3Constants.KEY, simple(s3DataDumpRemoteServer+ folderName + ".zip"))
-                        .to(ScsbConstants.SCSB_CAMEL_S3_TO_ENDPOINT);
+                if (!getValueFor(batchHeaders, "fetchType").equals(ScsbConstants.DATADUMP_FETCHTYPE_FULL)) {
+                    from("file:" + s3StagingDir + File.separator + folderName + "?noop=true&antInclude=*.xml,*.json")
+                            .routeId(ScsbConstants.FTP_ROUTE)
+                            .aggregate(new ZipAggregationStrategy(true, true))
+                            .constant(true)
+                            .completionFromBatchConsumer()
+                            .eagerCheckCompletion()
+                            .setHeader(S3Constants.KEY, simple(s3DataDumpRemoteServer + folderName + ".zip"))
+                            .to(ScsbConstants.SCSB_CAMEL_S3_TO_ENDPOINT);
+                }
+                else {
+                    from("file:" + s3StagingDir + File.separator + folderName + "?noop=true&antInclude=*.xml,*.json")
+                            .bean(new ZipFileProcessor(exchange.getContext().createProducerTemplate(), exchange), "ftpOnCompletion");
+                }
             }
         });
     }

@@ -32,6 +32,8 @@ import org.springframework.util.StopWatch;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -280,29 +282,30 @@ public class DataExportEmailProcessor implements Processor {
         if (transmissionType.equals(ScsbConstants.DATADUMP_TRANSMISSION_TYPE_S3)
                 ||transmissionType.equals(ScsbConstants.DATADUMP_TRANSMISSION_TYPE_FILESYSTEM)) {
 
-            String[] split = folderName.split("/");
-            String fileName = split[3];
+            if(fetchType.equals(fetchTypeFull)) {
+                String[] split = folderName.split("/");
+                String fileName = split[3];
 
-            String s3Folder = folderName.substring(0,folderName.lastIndexOf("/"));
-            StopWatch stopWatch = new StopWatch();
-            stopWatch.start();
+                String s3Folder = folderName.substring(0, folderName.lastIndexOf("/"));
+                StopWatch stopWatch = new StopWatch();
+                stopWatch.start();
 
-            try {
+                try {
 
-                String[] command = {"/bin/bash", dataDumpReportDirectory + File.separator + ScsbConstants.SHELL_FILE_NAME, s3StagingDir+File.separator+folderName, fileName, scsbBucketName, s3DataDumpDirectory + s3Folder, awsAccessKey, awsAccessSecretKey, dataDumpReportDirectory, requestingInstitutionCode}; // Replace with the actual path
-                // Execute the command
-                Process process = Runtime.getRuntime().exec(command);
-                boolean procExit = process.waitFor(Long.valueOf(30), TimeUnit.SECONDS);
-                if (procExit) {
-                    log.info("Script executed successfully.");
-                } else {
-                    log.info("Script execution time out exceeded " + procExit);
+                    String[] command = {"/bin/bash", dataDumpReportDirectory + File.separator + ScsbConstants.SHELL_FILE_NAME, s3StagingDir + File.separator + folderName, fileName, scsbBucketName, s3DataDumpDirectory + s3Folder, awsAccessKey, awsAccessSecretKey}; // Replace with the actual path
+                    // Execute the command
+                    Process process = Runtime.getRuntime().exec(command);
+                    boolean procExit = process.waitFor(Long.valueOf(30), TimeUnit.SECONDS);
+                    if (procExit) {
+                        log.info("Script executed successfully.");
+                    } else {
+                        log.info("Script execution time out exceeded " + procExit);
+                    }
                 }
-            }
-            catch (IOException ioExc) {
-                log.error("Exception Message >>>>>>> " + ioExc.getMessage());
-                stopWatch.stop();
-                log.info("Shell Script : total time at which the thread is interrupted ---> {} sec", stopWatch.getTotalTimeSeconds());
+                catch (IOException ioExc) {
+                    log.error("Exception Message >>>>>>> " + ioExc.getMessage());
+                    stopWatch.stop();
+                    log.info("Shell Script : total time at which the thread is interrupted ---> {} sec", stopWatch.getTotalTimeSeconds());
 
             }
             catch (Exception e) {
@@ -310,10 +313,10 @@ public class DataExportEmailProcessor implements Processor {
                 stopWatch.stop();
                 log.info("Shell Script : total time at which the thread is interrupted ---> {} sec", stopWatch.getTotalTimeSeconds());
 
+                }
+                stopWatch.stop();
+                log.info("Shell Script : Total time taken to zip and upload data to s3---> {} sec", stopWatch.getTotalTimeSeconds());
             }
-            stopWatch.stop();
-            log.info("Shell Script : Total time taken to zip and upload data to s3---> {} sec", stopWatch.getTotalTimeSeconds());
-
             dataDumpEmailService.sendEmail(institutionCodes,
                     Integer.valueOf(totalRecordCount),
                     Integer.valueOf(failedBibs),

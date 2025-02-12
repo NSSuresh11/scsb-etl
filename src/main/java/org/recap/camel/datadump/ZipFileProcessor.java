@@ -114,7 +114,8 @@ public class ZipFileProcessor implements Processor {
                 }
                 else {
                     from("file:" + s3StagingDir + File.separator + folderName + "?noop=true&antInclude=*.xml,*.json")
-                            .bean(new ZipFileProcessor(exchange.getContext().createProducerTemplate(), exchange), "ftpOnCompletion");
+                            .bean(new ZipFileProcessor(exchange.getContext().createProducerTemplate(), exchange), "ftpOnCompletion")
+                            .end();
                 }
             }
         });

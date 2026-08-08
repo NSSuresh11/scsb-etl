@@ -96,10 +96,10 @@ dependencies {
     implementation('info.freelibrary:freelib-marc4j:2.6.12')
     implementation('javax.validation:validation-api:2.0.1.Final')
 
-    implementation 'org.projectlombok:lombok:1.18.30'
-    annotationProcessor 'org.projectlombok:lombok:1.18.30'
-    testImplementation 'org.projectlombok:lombok:1.18.30'
-    testAnnotationProcessor 'org.projectlombok:lombok:1.18.30'
+    implementation 'org.projectlombok:lombok:1.18.42'
+    annotationProcessor 'org.projectlombok:lombok:1.18.42'
+    testImplementation 'org.projectlombok:lombok:1.18.42'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.42'
 
     implementation group: 'com.mysql', name: 'mysql-connector-j', version: '8.0.33'
     implementation('org.codehaus.jettison:jettison:1.5.4')

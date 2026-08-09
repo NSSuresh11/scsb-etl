@@ -1,5 +1,6 @@
 package org.recap.service.email.datadump;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.camel.ProducerTemplate;
 import org.recap.PropertyKeyConstants;
 import org.recap.ScsbConstants;
@@ -20,6 +21,7 @@ import java.util.Optional;
 /**
  * Created by premkb on 21/9/16.
  */
+@Slf4j
 @Service
 public class DataDumpEmailService {
 
@@ -135,7 +137,9 @@ public class DataDumpEmailService {
         String outputformat = dataDumpUtil.getOutputformat(dataDumpRequest.getOutputFileFormat());
         String transmissionType = dataDumpUtil.getTransmissionType(dataDumpRequest.getTransmissionType());
         EmailPayLoad emailPayLoad = new EmailPayLoad();
+        log.info("Inside sendEmailNotificationForExport >>>>>");
         if(isExportJob){
+            log.info("Inside isExportJb");
             emailPayLoad.setSubject("Data Dump Export Triggered with JOB");
             emailPayLoad.setTo(propertyUtil.getILSConfigProperties(dataDumpRequest.getRequestingInstitutionCode()).getEmailDataDumpTo());
         } else {
@@ -152,7 +156,10 @@ public class DataDumpEmailService {
         emailPayLoad.setOutputFileFormat(outputformat);
         emailPayLoad.setImsDepositoryCodes(dataDumpRequest.getImsDepositoryCodes());
         emailPayLoad.setMessage(!transmissionType.equalsIgnoreCase("HTTP")?"Will send further notification upon completion.":"");
+        log.info("Before sendBodyAndHeader");
         producer.sendBodyAndHeader(ScsbConstants.EMAIL_Q, emailPayLoad, ScsbConstants.DATADUMP_EMAILBODY_FOR, ScsbConstants.DATADUMP_EXPORT_NOTIFICATION);
+        log.info("After sendBodyAndHeader");
+
     }
 }
 

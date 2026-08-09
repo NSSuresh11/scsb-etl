@@ -65,7 +65,7 @@ public class SecondaryDatabaseConfig {
         jpaProperties.put("hibernate.jdbc.batch_size", env.getProperty("spring.jpa.properties.hibernate.jdbc.batch_size"));
         jpaProperties.put("hibernate.order_inserts", env.getProperty("spring.jpa.properties.hibernate.order_inserts"));
         jpaProperties.put("hibernate.order_updates", env.getProperty("spring.jpa.properties.hibernate.order_updates"));
-        jpaProperties.put("hibernate.dialect", "org.hibernate.dialect.MySQL8Dialect");
+        jpaProperties.put("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
         return jpaProperties;
     }
 

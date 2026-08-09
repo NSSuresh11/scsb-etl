@@ -1,8 +1,9 @@
-FROM scsb-base as builder
+FROM scsb-base AS builder
 WORKDIR application
 ARG JAR_FILE=build/libs/*.jar
 COPY ${JAR_FILE} scsb-etl.jar
-RUN java -Djarmode=layertools -jar scsb-etl.jar extract
+#RUN java -Djarmode=layertools -jar scsb-etl.jar extract
+RUN java -Djarmode=tools -jar scsb-etl.jar extract --layers --launcher
 
 FROM scsb-base
 

@@ -70,40 +70,42 @@ repositories {
 
 dependencies {
     implementation fileTree(dir: '/data/commonjar', include: '*3.1.jar')
-    implementation('org.apache.camel.springboot:camel-spring-boot-starter:4.21.0')
-    implementation('org.apache.camel.springboot:camel-spring-boot-dependencies:4.21.0')
-    implementation('org.apache.camel:camel-activemq:4.21.0')
-    implementation('org.apache.camel:camel-ftp:4.21.0')
-    implementation('org.apache.camel:camel-csv:4.21.0')
-    implementation('org.apache.camel:camel-bindy:4.21.0')
-    implementation('org.apache.camel:camel-mail:4.21.0')
-    implementation('org.apache.camel:camel-stream:4.21.0')
-    implementation('org.apache.camel:camel-jaxb:4.21.0')
-    implementation('org.apache.camel:camel-zipfile:4.21.0')
-    implementation('org.apache.camel.springboot:camel-aws-s3-starter:3.8.0')
-    implementation('org.apache.camel:camel-aws-s3:3.8.0')
+    implementation 'org.apache.camel.springboot:camel-spring-boot-starter:4.21.0'
+    implementation 'org.apache.camel.springboot:camel-spring-boot-dependencies:4.21.0'
+    implementation 'org.apache.camel:camel-activemq:4.21.0'
+    implementation 'org.apache.camel:camel-ftp:4.21.0'
+    implementation 'org.apache.camel:camel-csv:4.21.0'
+    implementation 'org.apache.camel:camel-bindy:4.21.0'
+    implementation 'org.apache.camel:camel-mail:4.21.0'
+    implementation 'org.apache.camel:camel-stream:4.21.0'
+    implementation 'org.apache.camel:camel-jaxb:4.21.0'
+    implementation 'org.apache.camel:camel-zipfile:4.21.0'
+    implementation 'org.apache.camel:camel-jms:4.21.0'
+
+    implementation 'org.apache.camel.springboot:camel-aws-s3-starter:3.8.0'
+    implementation 'org.apache.camel:camel-aws-s3:3.8.0'
 
     implementation 'jakarta.mail:jakarta.mail-api:2.2.0-M1'
     implementation 'com.sun.mail:smtp:2.0.2'
     implementation 'com.sun.mail:jakarta.mail:2.0.2'
 
-    implementation('org.apache.commons:commons-csv:1.10.0')
+    implementation 'org.apache.commons:commons-csv:1.10.0'
     implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.14.0'
 
-    implementation('org.apache.activemq:activemq-pool:5.18.3')
-    implementation('org.apache.activemq:activemq-broker:5.18.3')
-    implementation('org.apache.activemq:activemq-client-jakarta:5.18.3')
+    implementation 'org.apache.activemq:activemq-pool:5.18.3'
+    implementation 'org.apache.activemq:activemq-broker:5.18.3'
+    implementation 'org.apache.activemq:activemq-client-jakarta:5.18.3'
 
-    implementation('org.springframework.boot:spring-boot-starter-data-jpa')
-    implementation('org.springframework.boot:spring-boot-starter-thymeleaf')
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation("org.springframework.cloud:spring-cloud-config-client:5.0.0")
-    implementation('org.springframework.boot:spring-boot-starter-web-services')
+    implementation 'org.springframework.boot:spring-boot-starter-web-services'
 
-    implementation('com.google.guava:guava:33.1.0-jre')
-    implementation('commons-io:commons-io:2.15.1')
-    implementation('commons-beanutils:commons-beanutils:1.9.4')
-    implementation('info.freelibrary:freelib-marc4j:2.6.12')
-    implementation('javax.validation:validation-api:2.0.1.Final')
+    implementation 'com.google.guava:guava:33.1.0-jre'
+    implementation 'commons-io:commons-io:2.15.1'
+    implementation 'commons-beanutils:commons-beanutils:1.9.4'
+    implementation 'info.freelibrary:freelib-marc4j:2.6.12'
+    implementation 'javax.validation:validation-api:2.0.1.Final'
 
     implementation 'org.projectlombok:lombok:1.18.42'
     annotationProcessor 'org.projectlombok:lombok:1.18.42'
@@ -111,7 +113,7 @@ dependencies {
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.42'
 
     implementation group: 'com.mysql', name: 'mysql-connector-j', version: '8.0.33'
-    implementation('org.codehaus.jettison:jettison:1.5.4')
+    implementation 'org.codehaus.jettison:jettison:1.5.4'
 
     implementation 'io.micrometer:micrometer-registry-prometheus'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
@@ -125,8 +127,8 @@ dependencies {
     implementation group: 'org.json', name: 'json', version: '20240303'
     implementation group: 'com.google.code.gson', name: 'gson', version: '2.10.1'
 
-    testImplementation('org.springframework.boot:spring-boot-starter-test')
-    testImplementation('org.springframework.restdocs:spring-restdocs-mockmvc')
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
 
     testImplementation group: 'org.mockito', name: 'mockito-core', version: '5.5.0'
     testImplementation group: 'org.powermock', name: 'powermock-api-mockito2', version: '2.0.9'

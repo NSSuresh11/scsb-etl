@@ -15,8 +15,8 @@ RUN unzip awscliv2.zip
 RUN ./aws/install
 
 WORKDIR application
-COPY --from=builder application/dependencies/ ./
-COPY --from=builder application/spring-boot-loader/ ./
-COPY --from=builder application/snapshot-dependencies/ ./
-COPY --from=builder application/scsb-etl.jar/ ./
+COPY --from=builder application/dependencies ./
+COPY --from=builder application/spring-boot-loader ./
+COPY --from=builder application/snapshot-dependencies ./
+COPY --from=builder application/scsb-etl.jar ./
 ENTRYPOINT java -jar -Denvironment=$ENV scsb-etl.jar && bash

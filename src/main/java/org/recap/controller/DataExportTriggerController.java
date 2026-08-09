@@ -48,7 +48,8 @@ public class DataExportTriggerController {
                 try {
                     sendEmailForDataDumpTrigger(dataDumpRequest);
                 } catch (Exception e) {
-                    log.info("exception occurred while sending email for data dump export job trigger");
+                    log.info("exception occurred while sending email for data dump export job trigger" + e.getMessage());
+                    log.info(String.valueOf(e));
                 }
                 dataExportHelperService.checkForExistingRequestAndStart(dataDumpRequest, true);
             }

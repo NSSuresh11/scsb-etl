@@ -3,7 +3,7 @@ WORKDIR application
 ARG JAR_FILE=build/libs/*.jar
 COPY ${JAR_FILE} scsb-etl.jar
 #RUN java -Djarmode=layertools -jar scsb-etl.jar extract
-RUN java -Djarmode=tools -jar scsb-etl.jar extract --layers --launcher
+RUN java -Djarmode=tools -jar scsb-etl.jar extract --destination extracted --layers --launcher
 
 FROM scsb-base
 
@@ -15,8 +15,8 @@ RUN unzip awscliv2.zip
 RUN ./aws/install
 
 WORKDIR application
-COPY --from=builder application/dependencies ./
-COPY --from=builder application/spring-boot-loader ./
-COPY --from=builder application/snapshot-dependencies ./
-COPY --from=builder application/scsb-etl.jar ./
+COPY --from=builder application/extracted/dependencies/ ./
+COPY --from=builder application/extracted/spring-boot-loader/ ./
+COPY --from=builder application/extracted/snapshot-dependencies/ ./
+COPY --from=builder application/extracted/scsb-etl.jar/ ./
 ENTRYPOINT java -jar -Denvironment=$ENV scsb-etl.jar && bash

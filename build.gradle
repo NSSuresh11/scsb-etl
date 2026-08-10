@@ -112,7 +112,7 @@ dependencies {
     testImplementation 'org.projectlombok:lombok:1.18.42'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.42'
 
-    implementation group: 'com.mysql', name: 'mysql-connector-j', version: '8.0.33'
+    implementation 'com.mysql:mysql-connector-j:9.1.0'
     implementation 'org.codehaus.jettison:jettison:1.5.4'
 
     implementation 'io.micrometer:micrometer-registry-prometheus'

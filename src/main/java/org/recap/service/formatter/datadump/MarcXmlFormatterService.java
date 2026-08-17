@@ -105,6 +105,7 @@ public class MarcXmlFormatterService implements DataDumpFormatterInterface {
                 add901Field(record, bibliographicEntity);
             }
             List<Integer> itemIds = getItemIds(bibliographicEntity);
+            log.info("itemids size  >>>>>> " + itemIds.size());
             record = addHoldingInfo(record, bibliographicEntity.getHoldingsEntities(),itemIds,getNonOrphanHoldingsIdList(bibliographicEntity.getItemEntities()));
             results.put(ScsbCommonConstants.SUCCESS, record);
         } catch (Exception e) {
@@ -152,9 +153,12 @@ public class MarcXmlFormatterService implements DataDumpFormatterInterface {
      */
     private static List<Integer> getNonOrphanHoldingsIdList(List<ItemEntity> itemEntityList){
         Set<Integer> holdingsIdSet = new HashSet<>();
-        for(ItemEntity itemEntity:itemEntityList){
-            for(HoldingsEntity holdingsEntity:itemEntity.getHoldingsEntities()){
-                holdingsIdSet.add(holdingsEntity.getId());
+        log.info("itemEntityList size >>>>>>> " + itemEntityList.size());
+        if (!itemEntityList.isEmpty()) {
+            for (ItemEntity itemEntity : itemEntityList) {
+                for (HoldingsEntity holdingsEntity : itemEntity.getHoldingsEntities()) {
+                    holdingsIdSet.add(holdingsEntity.getId());
+                }
             }
         }
         return new ArrayList<>(holdingsIdSet);

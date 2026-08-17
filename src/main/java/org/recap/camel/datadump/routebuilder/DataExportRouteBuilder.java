@@ -2,6 +2,7 @@ package org.recap.camel.datadump.routebuilder;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.camel.CamelContext;
+import org.apache.camel.LoggingLevel;
 import org.apache.camel.builder.RouteBuilder;
 import org.recap.ScsbConstants;
 import org.recap.camel.datadump.DataDumpSequenceProcessor;
@@ -132,7 +133,10 @@ public class DataExportRouteBuilder {
                             .when(header("transmissionType").isEqualTo(ScsbConstants.DATADUMP_TRANSMISSION_TYPE_S3))
                             .to(ScsbConstants.DATADUMP_ZIPFILE_FTP_Q)
                             .when(header("transmissionType").isEqualTo(ScsbConstants.DATADUMP_TRANSMISSION_TYPE_HTTP))
-                            .to(ScsbConstants.DATADUMP_HTTP_Q);
+                            .to(ScsbConstants.DATADUMP_HTTP_Q)
+                            .onException(org.springframework.jms.UncategorizedJmsException.class)
+                            .handled(false)
+                            .log(LoggingLevel.ERROR, "Root Cause: ${exception.cause}");;
                 }
             });
 

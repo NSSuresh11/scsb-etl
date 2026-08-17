@@ -96,6 +96,9 @@ public class DataExportRouteBuilder {
 
                     from(ScsbConstants.MARC_RECORD_FOR_DATA_EXPORT_Q)
                             .routeId(ScsbConstants.MARC_RECORD_DATA_EXPORT_ROUTE_ID)
+                            .onException(org.springframework.jms.UncategorizedJmsException.class)
+                            .handled(false)
+                            .log(LoggingLevel.ERROR, "Exception on MARC_RECORD_FOR_DATA_EXPORT_Q Root Cause: ${exception.cause}")
                             .aggregate(constant(true), new DataExportAggregator()).completionPredicate(new DataExportPredicate(Integer.valueOf(dataDumpPropertyHolder.getDataDumpRecordsPerFile())))
                             .bean(new MarcXMLFormatActiveMQConsumer(marcXmlFormatterService), "processMarcXmlString")
                             .to(ScsbConstants.DATADUMP_STAGING_Q);
@@ -129,14 +132,15 @@ public class DataExportRouteBuilder {
                 public void configure() throws Exception {
                     from(ScsbConstants.DATADUMP_STAGING_Q)
                             .routeId(ScsbConstants.DATADUMP_STAGING_ROUTE_ID)
+                            .onException(org.springframework.jms.UncategorizedJmsException.class)
+                            .handled(false)
+                            .log(LoggingLevel.ERROR, "Root Cause DATADUMP_ZIPFILE_FTP_Q : ${exception.cause}")
                             .choice()
                             .when(header("transmissionType").isEqualTo(ScsbConstants.DATADUMP_TRANSMISSION_TYPE_S3))
                             .to(ScsbConstants.DATADUMP_ZIPFILE_FTP_Q)
                             .when(header("transmissionType").isEqualTo(ScsbConstants.DATADUMP_TRANSMISSION_TYPE_HTTP))
                             .to(ScsbConstants.DATADUMP_HTTP_Q)
-                            .onException(org.springframework.jms.UncategorizedJmsException.class)
-                            .handled(false)
-                            .log(LoggingLevel.ERROR, "Root Cause: ${exception.cause}");;
+                          ;
                 }
             });
 

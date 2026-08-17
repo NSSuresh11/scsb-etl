@@ -103,7 +103,10 @@ dependencies {
     implementation 'com.google.guava:guava:33.6.0-jre'
     implementation 'commons-io:commons-io:2.22.0'
     implementation 'commons-beanutils:commons-beanutils:1.11.0'
-    implementation 'info.freelibrary:freelib-marc4j:2.6.12'
+   // implementation 'info.freelibrary:freelib-marc4j:2.6.12'
+    implementation 'org.marc4j:marc4j:2.9.6'
+    implementation 'org.dom4j:dom4j:2.2.0'
+
     implementation 'javax.validation:validation-api:2.0.1.Final'
 
     implementation 'org.projectlombok:lombok:1.18.46'

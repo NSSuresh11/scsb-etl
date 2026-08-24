@@ -32,6 +32,7 @@ public class ActivemqRegistrar {
         ActiveMQComponent activeMQComponent = new ActiveMQComponent();
         activeMQComponent.setConnectionFactory(connectionFactory);
         activeMQComponent.setTrustAllPackages(true);
+        activeMQComponent.setObjectMessageEnabled(true);
         camelContext.addComponent("scsbactivemq", activeMQComponent);
     }
 }

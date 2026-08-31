@@ -110,10 +110,10 @@ dependencies {
     implementation 'net.logstash.logback:logstash-logback-encoder:7.4'
     implementation 'io.zipkin.brave:brave:6.0.1'
     implementation 'javax.servlet:javax.servlet-api:4.0.1'
-    implementation('org.apache.tomcat.embed:tomcat-embed-core:10.1.58')
-    implementation('org.apache.tomcat.embed:tomcat-embed-el:10.1.58')
-    implementation('org.apache.tomcat.embed:tomcat-embed-websocket:10.1.58')
-    implementation('org.apache.tomcat:tomcat-annotations-api:10.1.58')
+    implementation('org.apache.tomcat.embed:tomcat-embed-core:10.1.59')
+    implementation('org.apache.tomcat.embed:tomcat-embed-el:10.1.59')
+    implementation('org.apache.tomcat.embed:tomcat-embed-websocket:10.1.59')
+    implementation('org.apache.tomcat:tomcat-annotations-api:10.1.59')
 
     implementation 'org.springframework.cloud:spring-cloud-starter-config'
     implementation 'org.springframework.cloud:spring-cloud-starter-bus-amqp'
